@@ -47,13 +47,17 @@ func (s *SqlStore) CreateRule(data api.CreateRule) (api.Rule, error) {
 		name,
 		expression,
 		rule_type,
-		data
+		url,
+		method,
+		body
 	)
 	VALUES (
 		:name,
 		:expression,
 		:rule_type,
-		:data
+		:url,
+		:method,
+		:body
 	)
 	`
 

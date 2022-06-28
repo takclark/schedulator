@@ -19,8 +19,8 @@ type Rule struct {
 func main() {
 	logger := log.Default()
 
-	e := engine.NewEngine(logger)
-	if err := e.Start(); err != nil {
+	e, err := engine.NewEngine(logger)
+	if err != nil {
 		panic(err)
 	}
 

@@ -1,18 +1,17 @@
 package requester
 
 import (
-	"bytes"
-	"encoding/json"
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type Requester struct {
 	Exp    string
 	URL    url.URL
 	Method string
-	Body   any
+	Body   *string
 }
 
 func (r *Requester) Expression() string {
@@ -21,14 +20,16 @@ func (r *Requester) Expression() string {
 
 func (r *Requester) Execute() func() {
 	return func() {
-		c := http.DefaultClient
-		bs, err := json.Marshal(r.Body)
-		if err != nil {
-			log.Println("error sending request:", err)
-			return
+		c := &http.Client{
+			Timeout: time.Minute,
 		}
 
-		req, err := http.NewRequest(r.Method, r.URL.String(), bytes.NewReader(bs))
+		// var bodyReader *bytes.Reader
+		// if r.Body != nil {
+		// 	bodyReader = bytes.NewReader([]byte(*r.Body))
+		// }
+
+		req, err := http.NewRequest(r.Method, r.URL.String(), nil)
 		if err != nil {
 			log.Println("error assembling request:", err)
 			return
